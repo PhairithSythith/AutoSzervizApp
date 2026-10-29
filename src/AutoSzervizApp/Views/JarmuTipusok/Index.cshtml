@@ -1,0 +1,40 @@
+@model IEnumerable<AutoSzervizApp.Models.JarmuTipus>
+
+@{
+    ViewData["Title"] = "Járműtípusok";
+}
+
+<h1>Járműtípusok</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Új járműtípus felvétele</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Márka</th>
+            <th>Modell</th>
+            <th>Gyártási év</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="3">Még nincs rögzített járműtípus.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var jarmuTipus in Model)
+            {
+                <tr>
+                    <td>@jarmuTipus.Marka</td>
+                    <td>@jarmuTipus.Modell</td>
+                    <td>@jarmuTipus.GyartasiEv</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
