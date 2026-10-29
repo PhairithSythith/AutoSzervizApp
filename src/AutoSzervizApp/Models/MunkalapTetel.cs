@@ -38,5 +38,5 @@ public class MunkalapTetel
     public decimal Egysegar { get; set; }
 
     [Display(Name = "Összesen (Ft)")]
-    public decimal Osszesen => Mennyiseg * Egysegar;
+    public decimal Osszesen => Mennyiseg * Egysegar; 
 }

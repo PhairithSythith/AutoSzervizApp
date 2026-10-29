@@ -55,4 +55,6 @@ public class Munkalap
 
     [Display(Name = "Státusz")]
     public MunkalapStatusz Statusz { get; set; } = MunkalapStatusz.Bejegyezve;
-    }
+
+    public ICollection<MunkalapTetel> Tetelek { get; set; } = new List<MunkalapTetel>();    
+}
