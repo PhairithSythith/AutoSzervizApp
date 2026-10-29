@@ -1,0 +1,40 @@
+@model IEnumerable<AutoSzervizApp.Models.Ugyfel>
+
+@{
+    ViewData["Title"] = "Ügyfelek";
+}
+
+<h1>Ügyfelek</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Új ügyfél felvétele</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Név</th>
+            <th>Telefonszám</th>
+            <th>E-mail-cím</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="3">Még nincs rögzített ügyfél.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var ugyfel in Model)
+            {
+                <tr>
+                    <td>@ugyfel.Nev</td>
+                    <td>@ugyfel.Telefon</td>
+                    <td>@ugyfel.EmailCim</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

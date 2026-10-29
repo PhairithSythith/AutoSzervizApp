@@ -23,9 +23,11 @@ using (var scope = app.Services.CreateScope())
 {
     var szerepkorKezelo =
         scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        
 
     var context =
     scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    context.Database.Migrate();
 
     await DbInitializer.InitializeAsync(context, szerepkorKezelo);
 }
