@@ -1,0 +1,40 @@
+@model IEnumerable<AutoSzervizApp.Models.Jarmu>
+
+@{
+    ViewData["Title"] = "Járművek";
+}
+
+<h1>Járművek</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Rendszám</th>
+            <th>Járműtípus</th>
+            <th>Ügyfél</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="3">Még nincs rögzített jármű.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var jarmu in Model)
+            {
+                <tr>
+                    <td>@jarmu.Rendszam</td>
+                    <td>
+                        @jarmu.JarmuTipus?.Marka
+                        @jarmu.JarmuTipus?.Modell
+                        (@jarmu.JarmuTipus?.GyartasiEv)
+                    </td>
+                    <td>@jarmu.Ugyfel?.Nev</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
