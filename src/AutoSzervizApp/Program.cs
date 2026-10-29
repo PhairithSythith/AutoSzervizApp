@@ -19,6 +19,14 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var szerepkorKezelo =
+        scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    await DbInitializer.InitializeAsync(szerepkorKezelo);
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
