@@ -16,6 +16,7 @@
             <th>Név</th>
             <th>Telefonszám</th>
             <th>E-mail-cím</th>
+            
         </tr>
     </thead>
     <tbody>
@@ -33,6 +34,13 @@
                     <td>@ugyfel.Nev</td>
                     <td>@ugyfel.Telefon</td>
                     <td>@ugyfel.EmailCim</td>
+                    <td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@ugyfel.Id">Szerkesztés</a>
+                            <a asp-action="Delete" asp-route-id="@ugyfel.Id">Törlés</a>
+                        }
+                    </td>
                 </tr>
             }
         }
