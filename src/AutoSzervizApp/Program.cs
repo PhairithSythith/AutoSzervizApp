@@ -24,7 +24,10 @@ using (var scope = app.Services.CreateScope())
     var szerepkorKezelo =
         scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    await DbInitializer.InitializeAsync(szerepkorKezelo);
+    var context =
+    scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    await DbInitializer.InitializeAsync(context, szerepkorKezelo);
 }
 
 // Configure the HTTP request pipeline.
