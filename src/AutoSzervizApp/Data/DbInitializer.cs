@@ -6,8 +6,9 @@ namespace AutoSzervizApp.Data;
 public static class DbInitializer
 {
     public static async Task InitializeAsync(
-        ApplicationDbContext context,
-        RoleManager<IdentityRole> szerepkorKezelo)
+    ApplicationDbContext context,
+    RoleManager<IdentityRole> szerepkorKezelo,
+    UserManager<IdentityUser> felhasznaloKezelo)
     {
         string[] szerepkorok = { "Admin", "Employee" };
 
@@ -18,6 +19,14 @@ public static class DbInitializer
                 await szerepkorKezelo.CreateAsync(
                     new IdentityRole(szerepkor));
             }
+        }
+
+        var admin = await felhasznaloKezelo.FindByEmailAsync("admin@gmail.com");
+
+        if (admin != null &&
+            !await felhasznaloKezelo.IsInRoleAsync(admin, "Admin"))
+        {
+            await felhasznaloKezelo.AddToRoleAsync(admin, "Admin");
         }
 
         if (context.SzervizTipusok.Any())

@@ -21,15 +21,23 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var szerepkorKezelo =
-        scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        
+    var services = scope.ServiceProvider;
 
     var context =
-    scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        services.GetRequiredService<ApplicationDbContext>();
+
     context.Database.Migrate();
 
-    await DbInitializer.InitializeAsync(context, szerepkorKezelo);
+    var szerepkorKezelo =
+        services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    var felhasznaloKezelo =
+        services.GetRequiredService<UserManager<IdentityUser>>();
+
+    await DbInitializer.InitializeAsync(
+        context,
+        szerepkorKezelo,
+        felhasznaloKezelo);
 }
 
 // Configure the HTTP request pipeline.
