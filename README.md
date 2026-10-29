@@ -24,4 +24,4 @@ Az alkalmazás célja, hogy támogassa az ügyfelek, járművek, szervizidőpont
 
 ## Állapot
 
-A projekt újraépítése 2026. október 28-án kezdődött. A funkciók fokozatosan, külön commitokban készülnek.
+A projekt újraépítése 2026. október 28-án kezdődött. 
