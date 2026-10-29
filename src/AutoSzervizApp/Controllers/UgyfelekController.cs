@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AutoSzervizApp.Controllers;
 
+[Authorize]
 public class UgyfelekController : Controller
 {
     private readonly ApplicationDbContext _context;
