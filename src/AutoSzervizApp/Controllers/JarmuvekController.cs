@@ -94,6 +94,44 @@ public class JarmuvekController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var jarmu = await _context.Jarmuvek
+            .Include(j => j.JarmuTipus)
+            .Include(j => j.Ugyfel)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(j => j.Id == id);
+
+        if (jarmu == null)
+        {
+            return NotFound();
+        }
+
+        return View(jarmu);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [Authorize(Roles = "Admin")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var jarmu = await _context.Jarmuvek.FindAsync(id);
+
+        if (jarmu != null)
+        {
+            _context.Jarmuvek.Remove(jarmu);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
     private async Task ListaadatokBetolteseAsync()
     {
         var ugyfelek = await _context.Ugyfelek

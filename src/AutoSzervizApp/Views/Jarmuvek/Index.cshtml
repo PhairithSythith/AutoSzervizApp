@@ -45,6 +45,7 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <a asp-action="Edit" asp-route-id="@jarmu.Id">Szerkesztés</a>
+                            <a asp-action="Delete" asp-route-id="@jarmu.Id">Törlés</a>
                         }
                     </td>
                 </tr>
