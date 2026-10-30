@@ -1,0 +1,36 @@
+@model AutoSzervizApp.Models.SzervizTipus
+
+@{
+    ViewData["Title"] = "Új szerviztípus";
+}
+
+<h1>Új szerviztípus</h1>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Nev" class="form-label"></label>
+        <input asp-for="Nev" class="form-control" />
+        <span asp-validation-for="Nev" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Leiras" class="form-label"></label>
+        <textarea asp-for="Leiras" class="form-control"></textarea>
+        <span asp-validation-for="Leiras" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Alapar" class="form-label"></label>
+        <input asp-for="Alapar" class="form-control" />
+        <span asp-validation-for="Alapar" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Mentés</button>
+    <a asp-action="Index" class="btn btn-secondary">Vissza</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
