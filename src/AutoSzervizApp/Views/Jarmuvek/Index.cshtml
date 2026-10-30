@@ -19,13 +19,14 @@
             <th>Rendszám</th>
             <th>Járműtípus</th>
             <th>Ügyfél</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @if (!Model.Any())
         {
             <tr>
-                <td colspan="3">Még nincs rögzített jármű.</td>
+                <td colspan="4">Még nincs rögzített jármű.</td>
             </tr>
         }
         else
@@ -40,6 +41,12 @@
                         (@jarmu.JarmuTipus?.GyartasiEv)
                     </td>
                     <td>@jarmu.Ugyfel?.Nev</td>
+                    <td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@jarmu.Id">Szerkesztés</a>
+                        }
+                    </td>
                 </tr>
             }
         }

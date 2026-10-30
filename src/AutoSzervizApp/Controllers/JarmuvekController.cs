@@ -51,6 +51,49 @@ public class JarmuvekController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var jarmu = await _context.Jarmuvek.FindAsync(id);
+
+        if (jarmu == null)
+        {
+            return NotFound();
+        }
+
+        await ListaadatokBetolteseAsync();
+        return View(jarmu);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(
+        int id,
+        [Bind("Id,Rendszam,JarmuTipusId,UgyfelId")] Jarmu jarmu)
+    {
+        if (id != jarmu.Id)
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            await ListaadatokBetolteseAsync();
+            return View(jarmu);
+        }
+
+        _context.Jarmuvek.Update(jarmu);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
     private async Task ListaadatokBetolteseAsync()
     {
         var ugyfelek = await _context.Ugyfelek
