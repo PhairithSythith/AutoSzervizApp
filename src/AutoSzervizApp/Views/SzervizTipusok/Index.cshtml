@@ -1,0 +1,36 @@
+@model IEnumerable<AutoSzervizApp.Models.SzervizTipus>
+
+@{
+    ViewData["Title"] = "Szerviztípusok";
+}
+
+<h1>Szerviztípusok</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Szolgáltatás neve</th>
+            <th>Leírás</th>
+            <th>Alapár</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="3">Még nincs rögzített szerviztípus.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var szervizTipus in Model)
+            {
+                <tr>
+                    <td>@szervizTipus.Nev</td>
+                    <td>@szervizTipus.Leiras</td>
+                    <td>@szervizTipus.Alapar Ft</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
