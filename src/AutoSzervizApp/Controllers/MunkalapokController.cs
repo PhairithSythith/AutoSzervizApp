@@ -140,6 +140,36 @@ public class MunkalapokController : Controller
 
         return View(munkalap);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AllapotFrissitese(
+        int id,
+        MunkalapStatusz ujStatusz)
+    {
+        if (!Enum.IsDefined(typeof(MunkalapStatusz), ujStatusz))
+        {
+            return BadRequest("Érvénytelen munkalapstátusz.");
+        }
+
+        var munkalap = await _context.Munkalapok.FindAsync(id);
+
+        if (munkalap == null)
+        {
+            return NotFound();
+        }
+
+        munkalap.Statusz = ujStatusz;
+        munkalap.UtoljaraModositva = DateTime.Now;
+        munkalap.UtoljaraModositotta = User.Identity?.Name;
+
+        await _context.SaveChangesAsync();
+
+        TempData["SikerUzenet"] =
+            $"A munkalap státusza sikeresen frissítve: {ujStatusz}";
+
+        return RedirectToAction(nameof(Details), new { id });
+    }
     
     private async Task ListaadatokBetolteseAsync(
     int? kivalasztottTipusId = null,

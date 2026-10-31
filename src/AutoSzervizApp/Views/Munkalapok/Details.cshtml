@@ -35,6 +35,26 @@
     <dd class="col-sm-9">@Model.Koltseg.ToString("N0") Ft</dd>
 </dl>
 
+    @if (TempData["SikerUzenet"] is string sikerUzenet)
+    {
+        <div class="alert alert-success">@sikerUzenet</div>
+    }
+
+    <form asp-action="AllapotFrissitese"
+        asp-route-id="@Model.Id"
+        method="post"
+        class="mb-4">
+        <label for="ujStatusz" class="form-label">Státusz módosítása</label>
+
+        <select id="ujStatusz"
+                name="ujStatusz"
+                class="form-select mb-2"
+                asp-items="Html.GetEnumSelectList<AutoSzervizApp.Models.MunkalapStatusz>()">
+        </select>
+
+        <button type="submit" class="btn btn-primary">Státusz mentése</button>
+    </form>
+
 <h2>Munkatételek</h2>
 
 @if (!Model.Tetelek.Any())
