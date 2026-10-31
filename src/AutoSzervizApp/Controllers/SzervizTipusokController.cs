@@ -88,4 +88,40 @@ public class SzervizTipusokController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var szervizTipus = await _context.SzervizTipusok
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (szervizTipus == null)
+        {
+            return NotFound();
+        }
+
+        return View(szervizTipus);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [Authorize(Roles = "Admin")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var szervizTipus = await _context.SzervizTipusok.FindAsync(id);
+
+        if (szervizTipus != null)
+        {
+            _context.SzervizTipusok.Remove(szervizTipus);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
 }

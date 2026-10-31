@@ -41,6 +41,7 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <a asp-action="Edit" asp-route-id="@szervizTipus.Id">Szerkesztés</a>
+                            <a asp-action="Delete" asp-route-id="@szervizTipus.Id">Törlés</a>
                         }
                     </td>
                 </tr>

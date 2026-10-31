@@ -1,0 +1,48 @@
+@model IEnumerable<AutoSzervizApp.Models.Munkalap>
+
+@{
+    ViewData["Title"] = "Munkalapok";
+}
+
+<h1>Munkalapok</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Azonosító</th>
+            <th>Rendszám</th>
+            <th>Járműtípus</th>
+            <th>Ügyfél</th>
+            <th>Státusz</th>
+            <th>Felvétel dátuma</th>
+            <th>Költség</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="7">Még nincs rögzített munkalap.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var munkalap in Model)
+            {
+                <tr>
+                    <td>@munkalap.Id</td>
+                    <td>@munkalap.Rendszam</td>
+                    <td>
+                        @munkalap.JarmuTipus?.Marka
+                        @munkalap.JarmuTipus?.Modell
+                        (@munkalap.JarmuTipus?.GyartasiEv)
+                    </td>
+                    <td>@munkalap.Ugyfel?.Nev</td>
+                    <td>@Html.DisplayFor(_ => munkalap.Statusz)</td>
+                    <td>@munkalap.Letrehozva.ToString("yyyy.MM.dd HH:mm")</td>
+                    <td>@munkalap.Koltseg.ToString("N0") Ft</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

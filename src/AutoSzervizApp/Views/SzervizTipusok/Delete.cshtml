@@ -1,0 +1,26 @@
+@model AutoSzervizApp.Models.SzervizTipus
+
+@{
+    ViewData["Title"] = "Szerviztípus törlése";
+}
+
+<h1>Szerviztípus törlése</h1>
+
+<p>Biztosan törlöd ezt a szerviztípust?</p>
+
+<dl class="row">
+    <dt class="col-sm-2">Szolgáltatás neve</dt>
+    <dd class="col-sm-10">@Model.Nev</dd>
+
+    <dt class="col-sm-2">Leírás</dt>
+    <dd class="col-sm-10">@Model.Leiras</dd>
+
+    <dt class="col-sm-2">Alapár</dt>
+    <dd class="col-sm-10">@Model.Alapar Ft</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Törlés</button>
+    <a asp-action="Index" class="btn btn-secondary">Mégse</a>
+</form>
