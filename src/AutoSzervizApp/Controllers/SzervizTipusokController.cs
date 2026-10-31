@@ -47,4 +47,45 @@ public class SzervizTipusokController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var szervizTipus = await _context.SzervizTipusok.FindAsync(id);
+
+        if (szervizTipus == null)
+        {
+            return NotFound();
+        }
+
+        return View(szervizTipus);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(
+        int id,
+        [Bind("Id,Nev,Leiras,Alapar")] SzervizTipus szervizTipus)
+    {
+        if (id != szervizTipus.Id)
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(szervizTipus);
+        }
+
+        _context.SzervizTipusok.Update(szervizTipus);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
 }

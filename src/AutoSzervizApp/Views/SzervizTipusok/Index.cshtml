@@ -19,13 +19,14 @@
             <th>Szolgáltatás neve</th>
             <th>Leírás</th>
             <th>Alapár</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @if (!Model.Any())
         {
             <tr>
-                <td colspan="3">Még nincs rögzített szerviztípus.</td>
+                <td colspan="4">Még nincs rögzített szerviztípus.</td>
             </tr>
         }
         else
@@ -36,6 +37,12 @@
                     <td>@szervizTipus.Nev</td>
                     <td>@szervizTipus.Leiras</td>
                     <td>@szervizTipus.Alapar Ft</td>
+                    <td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@szervizTipus.Id">Szerkesztés</a>
+                        }
+                    </td>
                 </tr>
             }
         }
