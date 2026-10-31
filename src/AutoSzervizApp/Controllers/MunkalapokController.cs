@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AutoSzervizApp.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Admin,Employee")]
 public class MunkalapokController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -53,6 +53,71 @@ public class MunkalapokController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var munkalap = await _context.Munkalapok.FindAsync(id);
+
+        if (munkalap == null)
+        {
+            return NotFound();
+        }
+
+        await ListaadatokBetolteseAsync(
+            munkalap.JarmuTipusId,
+            munkalap.UgyfelId);
+
+        return View(munkalap);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(
+        int id,
+        [Bind("Id,Rendszam,JarmuTipusId,UgyfelId,Leiras,Koltseg,Statusz,BefejezveDatuma")]
+        Munkalap munkalap)
+    {
+        if (id != munkalap.Id)
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            await ListaadatokBetolteseAsync(
+                munkalap.JarmuTipusId,
+                munkalap.UgyfelId);
+
+            return View(munkalap);
+        }
+
+        var adatbazisbanMunkalap =
+            await _context.Munkalapok.FindAsync(id);
+
+        if (adatbazisbanMunkalap == null)
+        {
+            return NotFound();
+        }
+
+        adatbazisbanMunkalap.Rendszam = munkalap.Rendszam;
+        adatbazisbanMunkalap.JarmuTipusId = munkalap.JarmuTipusId;
+        adatbazisbanMunkalap.UgyfelId = munkalap.UgyfelId;
+        adatbazisbanMunkalap.Leiras = munkalap.Leiras;
+        adatbazisbanMunkalap.Koltseg = munkalap.Koltseg;
+        adatbazisbanMunkalap.Statusz = munkalap.Statusz;
+        adatbazisbanMunkalap.BefejezveDatuma = munkalap.BefejezveDatuma;
+        adatbazisbanMunkalap.UtoljaraModositva = DateTime.Now;
+        adatbazisbanMunkalap.UtoljaraModositotta = User.Identity?.Name;
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
@@ -75,8 +140,10 @@ public class MunkalapokController : Controller
 
         return View(munkalap);
     }
-
-    private async Task ListaadatokBetolteseAsync()
+    
+    private async Task ListaadatokBetolteseAsync(
+    int? kivalasztottTipusId = null,
+    int? kivalasztottUgyfelId = null)
     {
         var ugyfelek = await _context.Ugyfelek
             .OrderBy(u => u.Nev)
@@ -90,7 +157,10 @@ public class MunkalapokController : Controller
             })
             .ToListAsync();
 
-        ViewData["UgyfelId"] = new SelectList(ugyfelek, "Id", "Nev");
-        ViewData["JarmuTipusId"] = new SelectList(tipusok, "Id", "Megnevezes");
+        ViewData["UgyfelId"] =
+        new SelectList(ugyfelek, "Id", "Nev", kivalasztottUgyfelId);
+
+        ViewData["JarmuTipusId"] =
+        new SelectList(tipusok, "Id", "Megnevezes", kivalasztottTipusId);
     }
 }

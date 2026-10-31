@@ -1,0 +1,83 @@
+@model AutoSzervizApp.Models.Munkalap
+
+@{
+    ViewData["Title"] = "Munkalap szerkesztése";
+}
+
+<h1>Munkalap szerkesztése</h1>
+
+<div class="row">
+    <div class="col-md-7">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label asp-for="UgyfelId" class="form-label">Ügyfél</label>
+                <select asp-for="UgyfelId"
+                        asp-items="ViewBag.UgyfelId"
+                        class="form-select">
+                    <option value="">Válassz ügyfelet</option>
+                </select>
+                <span asp-validation-for="UgyfelId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="JarmuTipusId" class="form-label">Járműtípus</label>
+                <select asp-for="JarmuTipusId"
+                        asp-items="ViewBag.JarmuTipusId"
+                        class="form-select">
+                    <option value="">Válassz járműtípust</option>
+                </select>
+                <span asp-validation-for="JarmuTipusId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Rendszam" class="form-label"></label>
+                <input asp-for="Rendszam" class="form-control" />
+                <span asp-validation-for="Rendszam" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Leiras" class="form-label"></label>
+                <textarea asp-for="Leiras" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Leiras" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Koltseg" class="form-label"></label>
+                <input asp-for="Koltseg"
+                       class="form-control"
+                       type="number"
+                       min="0"
+                       step="any" />
+                <span asp-validation-for="Koltseg" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="BefejezveDatuma" class="form-label"></label>
+                <input asp-for="BefejezveDatuma"
+                       class="form-control"
+                       type="date" />
+                <span asp-validation-for="BefejezveDatuma" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Statusz" class="form-label"></label>
+                <select asp-for="Statusz"
+                        asp-items="Html.GetEnumSelectList<AutoSzervizApp.Models.MunkalapStatusz>()"
+                        class="form-select">
+                </select>
+                <span asp-validation-for="Statusz" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Módosítások mentése</button>
+            <a asp-action="Index" class="btn btn-secondary">Mégse</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
