@@ -6,6 +6,13 @@
 
 <h1>Munkalapok</h1>
 
+@if (User.IsInRole("Admin") || User.IsInRole("Employee"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Új munkalap</a>
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -16,13 +23,14 @@
             <th>Státusz</th>
             <th>Felvétel dátuma</th>
             <th>Költség</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @if (!Model.Any())
         {
             <tr>
-                <td colspan="7">Még nincs rögzített munkalap.</td>
+                <td colspan="8">Még nincs rögzített munkalap.</td>
             </tr>
         }
         else
@@ -41,6 +49,9 @@
                     <td>@Html.DisplayFor(_ => munkalap.Statusz)</td>
                     <td>@munkalap.Letrehozva.ToString("yyyy.MM.dd HH:mm")</td>
                     <td>@munkalap.Koltseg.ToString("N0") Ft</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@munkalap.Id">Részletek</a>
+                    </td>
                 </tr>
             }
         }

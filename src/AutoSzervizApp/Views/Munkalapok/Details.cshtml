@@ -1,0 +1,71 @@
+@model AutoSzervizApp.Models.Munkalap
+
+@{
+    ViewData["Title"] = "Munkalap részletei";
+}
+
+<h1>Munkalap részletei</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Azonosító</dt>
+    <dd class="col-sm-9">@Model.Id</dd>
+
+    <dt class="col-sm-3">Rendszám</dt>
+    <dd class="col-sm-9">@Model.Rendszam</dd>
+
+    <dt class="col-sm-3">Járműtípus</dt>
+    <dd class="col-sm-9">
+        @Model.JarmuTipus?.Marka @Model.JarmuTipus?.Modell
+        (@Model.JarmuTipus?.GyartasiEv)
+    </dd>
+
+    <dt class="col-sm-3">Ügyfél</dt>
+    <dd class="col-sm-9">@Model.Ugyfel?.Nev</dd>
+
+    <dt class="col-sm-3">Leírás / Hibajelenség</dt>
+    <dd class="col-sm-9">@Model.Leiras</dd>
+
+    <dt class="col-sm-3">Státusz</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.Statusz)</dd>
+
+    <dt class="col-sm-3">Felvétel dátuma</dt>
+    <dd class="col-sm-9">@Model.Letrehozva.ToString("yyyy.MM.dd HH:mm")</dd>
+
+    <dt class="col-sm-3">Költség</dt>
+    <dd class="col-sm-9">@Model.Koltseg.ToString("N0") Ft</dd>
+</dl>
+
+<h2>Munkatételek</h2>
+
+@if (!Model.Tetelek.Any())
+{
+    <p>Ehhez a munkalaphoz még nincs munkatétel rögzítve.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Típus</th>
+                <th>Megnevezés</th>
+                <th>Mennyiség</th>
+                <th>Egységár</th>
+                <th>Összesen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tetel in Model.Tetelek)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(_ => tetel.Tipus)</td>
+                    <td>@tetel.Megnevezes</td>
+                    <td>@tetel.Mennyiseg</td>
+                    <td>@tetel.Egysegar.ToString("N0") Ft</td>
+                    <td>@tetel.Osszesen.ToString("N0") Ft</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Vissza a listához</a>
