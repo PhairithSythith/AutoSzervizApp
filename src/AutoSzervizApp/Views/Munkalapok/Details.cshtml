@@ -55,6 +55,14 @@
         <button type="submit" class="btn btn-primary">Státusz mentése</button>
     </form>
 
+<p>
+    <a asp-action="Print"
+       asp-route-id="@Model.Id"
+       class="btn btn-outline-primary">
+        Nyomtatási nézet
+    </a>
+</p>
+
 <h2>Munkatételek</h2>
 
 @if (!Model.Tetelek.Any())

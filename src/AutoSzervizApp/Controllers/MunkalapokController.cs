@@ -171,6 +171,27 @@ public class MunkalapokController : Controller
         return RedirectToAction(nameof(Details), new { id });
     }
 
+    public async Task<IActionResult> Print(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var munkalap = await _context.Munkalapok
+            .Include(m => m.JarmuTipus)
+            .Include(m => m.Ugyfel)
+            .Include(m => m.Tetelek)
+            .FirstOrDefaultAsync(m => m.Id == id);
+
+        if (munkalap == null)
+        {
+            return NotFound();
+        }
+
+        return View(munkalap);
+    }
+
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int? id)
     {

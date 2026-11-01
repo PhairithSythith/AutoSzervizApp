@@ -1,0 +1,131 @@
+@model AutoSzervizApp.Models.Munkalap
+
+@{
+    ViewData["Title"] = "Munkalap nyomtatása";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Szerviz munkalap #@Model.Id</h1>
+    <button type="button" class="btn btn-primary" onclick="window.print()">Nyomtatás</button>
+</div>
+
+<hr />
+
+<h4>Ügyfél és gépjármű adatai</h4>
+
+<dl class="row">
+    <dt class="col-sm-3">Ügyfél neve</dt>
+    <dd class="col-sm-9">@(Model.Ugyfel?.Nev ?? "Ismeretlen ügyfél")</dd>
+
+    <dt class="col-sm-3">Rendszám</dt>
+    <dd class="col-sm-9">@Model.Rendszam</dd>
+
+    <dt class="col-sm-3">Autótípus</dt>
+    <dd class="col-sm-9">
+        @if (Model.JarmuTipus != null)
+        {
+            @($"{Model.JarmuTipus.Marka} {Model.JarmuTipus.Modell} ({Model.JarmuTipus.GyartasiEv})")
+        }
+        else
+        {
+            <span>Ismeretlen típus</span>
+        }
+    </dd>
+</dl>
+
+<hr />
+
+<h4>Munkalap adatai</h4>
+
+<dl class="row">
+    <dt class="col-sm-3">Hiba / elvégzendő feladat</dt>
+    <dd class="col-sm-9">@Model.Leiras</dd>
+
+    <dt class="col-sm-3">Felvétel dátuma</dt>
+    <dd class="col-sm-9">@Model.Letrehozva.ToString("yyyy. MM. dd. HH:mm")</dd>
+
+    <dt class="col-sm-3">Várható / elkészülési dátum</dt>
+    <dd class="col-sm-9">
+        @(Model.BefejezveDatuma.HasValue
+            ? Model.BefejezveDatuma.Value.ToString("yyyy. MM. dd.")
+            : "Nincs megadva")
+    </dd>
+
+    <dt class="col-sm-3">Státusz</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Statusz)</dd>
+
+    <dt class="col-sm-3">Összköltség</dt>
+    <dd class="col-sm-9"><strong>@Model.Koltseg.ToString("N0") Ft</strong></dd>
+</dl>
+
+<hr />
+
+<h4>Elvégzett / elvégzendő munkatételek</h4>
+
+@if (Model.Tetelek != null && Model.Tetelek.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Megnevezés</th>
+                <th>Mennyiség</th>
+                <th>Egységár</th>
+                <th>Összesen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tetel in Model.Tetelek)
+            {
+                <tr>
+                    <td>@tetel.Megnevezes</td>
+                    <td>@tetel.Mennyiseg</td>
+                    <td>@tetel.Egysegar.ToString("N0") Ft</td>
+                    <td>@((tetel.Mennyiseg * tetel.Egysegar).ToString("N0")) Ft</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Még nincs külön munkatétel rögzítve.</p>
+}
+
+<hr />
+
+<div class="row mt-5">
+    <div class="col-6">
+        <p>Ügyfél aláírása: __________________________</p>
+    </div>
+    <div class="col-6 text-end">
+        <p>Szerviz aláírása: __________________________</p>
+    </div>
+</div>
+
+<div class="mt-4 no-print">
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+        Vissza a részletekhez
+    </a>
+</div>
+
+<style>
+    @@media print {
+        .no-print,
+        .btn {
+            display: none !important;
+        }
+
+        body {
+            font-size: 12pt;
+        }
+
+        h1, h4 {
+            color: black !important;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+</style>
