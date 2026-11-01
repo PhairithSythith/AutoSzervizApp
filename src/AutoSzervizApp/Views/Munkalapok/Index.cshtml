@@ -52,6 +52,10 @@
                     <td>
                         <a asp-action="Details" asp-route-id="@munkalap.Id">Részletek</a>
                         <a asp-action="Edit" asp-route-id="@munkalap.Id">Szerkesztés</a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Delete" asp-route-id="@munkalap.Id">Törlés</a>
+                        }
                     </td>
                 </tr>
             }

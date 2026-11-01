@@ -1,0 +1,35 @@
+@model AutoSzervizApp.Models.Munkalap
+
+@{
+    ViewData["Title"] = "Munkalap törlése";
+}
+
+<h1>Munkalap törlése</h1>
+
+<p>Biztosan törlöd ezt a munkalapot?</p>
+
+<dl class="row">
+    <dt class="col-sm-3">Azonosító</dt>
+    <dd class="col-sm-9">@Model.Id</dd>
+
+    <dt class="col-sm-3">Rendszám</dt>
+    <dd class="col-sm-9">@Model.Rendszam</dd>
+
+    <dt class="col-sm-3">Járműtípus</dt>
+    <dd class="col-sm-9">
+        @Model.JarmuTipus?.Marka @Model.JarmuTipus?.Modell
+        (@Model.JarmuTipus?.GyartasiEv)
+    </dd>
+
+    <dt class="col-sm-3">Ügyfél</dt>
+    <dd class="col-sm-9">@Model.Ugyfel?.Nev</dd>
+
+    <dt class="col-sm-3">Leírás</dt>
+    <dd class="col-sm-9">@Model.Leiras</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Törlés</button>
+    <a asp-action="Index" class="btn btn-secondary">Mégse</a>
+</form>

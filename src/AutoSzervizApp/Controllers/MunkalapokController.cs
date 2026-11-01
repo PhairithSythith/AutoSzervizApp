@@ -170,6 +170,43 @@ public class MunkalapokController : Controller
 
         return RedirectToAction(nameof(Details), new { id });
     }
+
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var munkalap = await _context.Munkalapok
+            .Include(m => m.JarmuTipus)
+            .Include(m => m.Ugyfel)
+            .FirstOrDefaultAsync(m => m.Id == id);
+
+        if (munkalap == null)
+        {
+            return NotFound();
+        }
+
+        return View(munkalap);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [Authorize(Roles = "Admin")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var munkalap = await _context.Munkalapok.FindAsync(id);
+
+        if (munkalap != null)
+        {
+            _context.Munkalapok.Remove(munkalap);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
     
     private async Task ListaadatokBetolteseAsync(
     int? kivalasztottTipusId = null,
