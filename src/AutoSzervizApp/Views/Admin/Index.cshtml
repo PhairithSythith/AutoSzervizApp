@@ -6,11 +6,29 @@
 
 <h1>Felhasználók kezelése</h1>
 
+<p>
+    @if (TempData["Siker"] != null)
+    {
+        <div class="alert alert-success">@TempData["Siker"]</div>
+    }
+
+    @if (TempData["Hiba"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Hiba"]</div>
+    }
+    <a asp-controller="Admin"
+       asp-action="UjFelhasznalo"
+       class="btn btn-success">
+        Új dolgozó felvétele
+    </a>
+</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>E-mail-cím</th>
             <th>Szerepkörök</th>
+            <th>Új szerepkör</th>
             <th>Azonosító</th>
         </tr>
     </thead>
@@ -18,7 +36,7 @@
         @if (Model.Count == 0)
         {
             <tr>
-                <td colspan="3">Nincs regisztrált felhasználó.</td>
+                <td colspan="4">Nincs regisztrált felhasználó.</td>
             </tr>
         }
         else
@@ -31,6 +49,31 @@
                         @(string.IsNullOrWhiteSpace(felhasznalo.Szerepkorok)
                             ? "Nincs szerepkör"
                             : felhasznalo.Szerepkorok)
+                    </td>
+                    <td>
+                        <form asp-controller="Admin"
+                            asp-action="SzerepkorModositas"
+                            method="post">
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                name="id"
+                                value="@felhasznalo.Id" />
+
+                            <select name="ujSzerepkor" class="form-select mb-2">
+                                <option value="">Nincs szerepkör</option>
+                                <option value="Admin"
+                                        selected="@(felhasznalo.Szerepkorok == "Admin")">
+                                    Admin
+                                </option>
+                                <option value="Employee"
+                                        selected="@(felhasznalo.Szerepkorok == "Employee")">
+                                    Employee
+                                </option>
+                            </select>
+
+                            <button type="submit" class="btn btn-primary btn-sm">Mentés</button>
+                        </form>
                     </td>
                     <td><small>@felhasznalo.Id</small></td>
                 </tr>
