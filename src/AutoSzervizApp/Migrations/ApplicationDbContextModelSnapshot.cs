@@ -166,6 +166,53 @@ namespace AutoSzervizApp.Migrations
                     b.ToTable("SzervizTipusok");
                 });
 
+            modelBuilder.Entity("AutoSzervizApp.Models.SzervizTipusJavaslat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AdminMegjegyzes")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Allapot")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ElbiraloFelhasznaloId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("Elbiralva")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("JavasloFelhasznaloId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("JavasoltAlapar")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Leiras")
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Letrehozva")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nev")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ElbiraloFelhasznaloId");
+
+                    b.HasIndex("JavasloFelhasznaloId");
+
+                    b.ToTable("SzervizTipusJavaslatok");
+                });
+
             modelBuilder.Entity("AutoSzervizApp.Models.Ugyfel", b =>
                 {
                     b.Property<int>("Id")
@@ -328,9 +375,11 @@ namespace AutoSzervizApp.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderKey")
+                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderDisplayName")
@@ -368,9 +417,11 @@ namespace AutoSzervizApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
+                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
@@ -434,6 +485,24 @@ namespace AutoSzervizApp.Migrations
                     b.Navigation("Munkalap");
 
                     b.Navigation("SzervizTipus");
+                });
+
+            modelBuilder.Entity("AutoSzervizApp.Models.SzervizTipusJavaslat", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ElbiraloFelhasznalo")
+                        .WithMany()
+                        .HasForeignKey("ElbiraloFelhasznaloId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "JavasloFelhasznalo")
+                        .WithMany()
+                        .HasForeignKey("JavasloFelhasznaloId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ElbiraloFelhasznalo");
+
+                    b.Navigation("JavasloFelhasznalo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

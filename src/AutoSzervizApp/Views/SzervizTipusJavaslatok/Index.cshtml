@@ -1,0 +1,73 @@
+@model IEnumerable<AutoSzervizApp.Models.SzervizTipusJavaslat>
+
+@{
+    ViewData["Title"] = "Szolgáltatástípus-javaslataim";
+}
+
+<h1>Szolgáltatástípus-javaslataim</h1>
+
+<p>
+    Itt megtekintheted az általad beküldött szolgáltatástípus-javaslatokat
+    és azok elbírálási állapotát.
+</p>
+
+<p>
+    <a asp-action="Letrehozas" class="btn btn-primary">
+        Új javaslat beküldése
+    </a>
+</p>
+
+@if (TempData["Siker"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Siker"]
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Még nem küldtél be szolgáltatástípus-javaslatot.
+    </div>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Szolgáltatás neve</th>
+                <th>Leírás</th>
+                <th>Javasolt ár</th>
+                <th>Beküldés időpontja</th>
+                <th>Állapot</th>
+                <th>Admin megjegyzése</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var javaslat in Model)
+            {
+                <tr>
+                    <td>@javaslat.Nev</td>
+                    <td>@javaslat.Leiras</td>
+                    <td>@javaslat.JavasoltAlapar.ToString("N0") Ft</td>
+                    <td>@javaslat.Letrehozva.ToLocalTime().ToString("yyyy. MM. dd. HH:mm")</td>
+                    <td>
+                        @switch (javaslat.Allapot)
+                        {
+                            case AutoSzervizApp.Models.JavaslatAllapot.Fuggoben:
+                                <span class="badge bg-warning text-dark">Elbírálásra vár</span>
+                                break;
+                            case AutoSzervizApp.Models.JavaslatAllapot.Elfogadva:
+                                <span class="badge bg-success">Elfogadva</span>
+                                break;
+                            case AutoSzervizApp.Models.JavaslatAllapot.Elutasitva:
+                                <span class="badge bg-danger">Elutasítva</span>
+                                break;
+                        }
+                    </td>
+                    <td>@javaslat.AdminMegjegyzes</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
