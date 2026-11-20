@@ -1,6 +1,90 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Adatkezelési tájékoztató";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container my-4">
+    <h1 class="fw-bold mb-3">@ViewData["Title"]</h1>
+    <hr />
+
+    <div class="alert alert-info" role="alert">
+        <strong>Tájékoztatás:</strong>
+        Az AutoSzervizApp jelenleg fejlesztési és bemutató célú alkalmazás.
+        Éles használat előtt az adatkezelés jogi és technikai feltételeit
+        még rendezni kell.
+    </div>
+
+    <div class="card shadow-sm p-4 mb-4">
+        <h2 class="h4 text-primary">1. Az alkalmazás célja</h2>
+        <p>
+            Az alkalmazás célja egy autószerviz működésének támogatása,
+            különösen az ügyfelek, járművek, szerviztípusok és munkalapok
+            nyilvántartása.
+        </p>
+
+        <h2 class="h4 text-primary mt-3">2. Kezelt adatok</h2>
+        <p>
+            Az alkalmazásban az ügyfelekhez kapcsolódó személyes adatok,
+            például nevek, telefonszámok és e-mail-címek, valamint
+            járműadatok és a szervizeléshez kapcsolódó munkalapadatok
+            tárolhatók.
+        </p>
+        <p>
+            Az alkalmazás felhasználói fiókokat és azokhoz kapcsolódó
+            szerepköröket is kezel a hozzáférések szabályozásához.
+        </p>
+
+        <h2 class="h4 text-primary mt-3">3. Hozzáférés és jogosultságok</h2>
+        <p>
+            Az alkalmazás a védett funkciók eléréséhez bejelentkezést
+            követel meg. A jogosultságok szerepkörök alapján kerülnek
+            meghatározásra.
+        </p>
+        <ul>
+            <li>
+                <strong>Admin:</strong> hozzáfér az adminisztrációs
+                funkciókhoz, a szerviztípusok kezeléséhez, valamint
+                a számára engedélyezett ügyfél-, jármű- és munkalapkezelési
+                funkciókhoz.
+            </li>
+            <li>
+                <strong>Employee:</strong> hozzáfér a számára engedélyezett
+                jármű- és munkalapkezelési funkciókhoz.
+            </li>
+        </ul>
+        <p>
+            A nyilvános felhasználói regisztráció le van tiltva.
+            A felhasználói fiókok létrehozása és jogosultságainak kezelése
+            adminisztrátori funkció.
+        </p>
+
+        <h2 class="h4 text-primary mt-3">4. Adattárolás és adatbiztonság</h2>
+        <p>
+            Az alkalmazás SQLite-adatbázist használ. Az adatbázisban tárolt
+            információk biztonsága érdekében a hozzáféréseket és a
+            felhasználói jogosultságokat megfelelően kell kezelni.
+        </p>
+        <p>
+            A tényleges telepítési környezetben külön gondoskodni kell
+            többek között az adatbázisfájl védelméről, a biztonsági
+            mentésekről, a frissítésekről és az adatokhoz hozzáférő
+            személyek körének korlátozásáról.
+        </p>
+
+        <h2 class="h4 text-primary mt-3">5. Éles használat</h2>
+        <p>
+            Ez a tájékoztató a projekt jelenlegi működését ismerteti,
+            és önmagában nem tekinthető teljes körű, éles használatra
+            kész adatkezelési tájékoztatónak. Éles bevezetés előtt
+            meg kell határozni többek között az adatkezelő személyét,
+            az adatkezelés jogalapját és időtartamát, az érintettek
+            jogainak gyakorlására szolgáló elérhetőséget, valamint
+            az esetleges adattovábbításokat.
+        </p>
+    </div>
+
+    <a asp-controller="Home"
+       asp-action="Index"
+       class="btn btn-secondary">
+        Vissza a kezdőlapra
+    </a>
+</div>

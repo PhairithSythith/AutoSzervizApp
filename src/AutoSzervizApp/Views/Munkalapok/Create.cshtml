@@ -50,6 +50,33 @@
         <span asp-validation-for="Leiras" class="text-danger"></span>
     </div>
 
+        <div class="mb-3">
+        <label asp-for="Koltseg" class="form-label"></label>
+        <input asp-for="Koltseg"
+               class="form-control"
+               type="number"
+               min="0"
+               step="any" />
+        <span asp-validation-for="Koltseg" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="BefejezveDatuma" class="form-label"></label>
+        <input asp-for="BefejezveDatuma"
+               class="form-control"
+               type="date" />
+        <span asp-validation-for="BefejezveDatuma" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Statusz" class="form-label"></label>
+        <select asp-for="Statusz"
+                asp-items="Html.GetEnumSelectList<AutoSzervizApp.Models.MunkalapStatusz>()"
+                class="form-select">
+        </select>
+        <span asp-validation-for="Statusz" class="text-danger"></span>
+    </div>
+
     <button type="submit" class="btn btn-primary">Mentés</button>
     <a asp-action="Index" class="btn btn-secondary">Vissza</a>
 </form>

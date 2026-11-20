@@ -1,8 +1,133 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<AutoSzervizApp.Models.Munkalap>
+@using AutoSzervizApp.Models
+
+@{
+    ViewData["Title"] = "Műszerfal";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-4">
+    <h1 class="display-5 fw-bold">Autószerviz kezelőrendszer</h1>
+    <p class="lead text-muted">Áttekintés és aktuális szervizállapotok</p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-warning h-100">
+            <div class="card-body">
+                <h2 class="h6 text-uppercase">Aktív munkalapok</h2>
+                <p class="display-6 fw-bold mb-0">@ViewBag.AktivMunkalapokSzama db</p>
+                <small>Bejegyezve vagy folyamatban</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-success h-100">
+            <div class="card-body">
+                <h2 class="h6 text-uppercase">Befejezett munkák</h2>
+                <p class="display-6 fw-bold mb-0">
+                    @(((decimal)ViewBag.OsszesBevetel).ToString("N0")) Ft
+                </p>
+                <small>Lezárt munkalapok összköltsége</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-primary h-100">
+            <div class="card-body">
+                <h2 class="h6 text-uppercase">Ügyfelek</h2>
+                <p class="display-6 fw-bold mb-0">@ViewBag.UgyfelekSzama fő</p>
+                <small>Nyilvántartott ügyfelek</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-info h-100">
+            <div class="card-body">
+                <h2 class="h6 text-uppercase">Járművek</h2>
+                <p class="display-6 fw-bold mb-0">@ViewBag.JarmuvekSzama db</p>
+                <small>Nyilvántartott járművek</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="h5 mb-0">Legutóbbi munkalapok</h2>
+        <a asp-controller="Munkalapok"
+           asp-action="Index"
+           class="btn btn-sm btn-outline-primary">
+            Összes munkalap
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Azonosító</th>
+                    <th>Jármű / ügyfél</th>
+                    <th>Leírás</th>
+                    <th>Dátum</th>
+                    <th>Státusz</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                        Még nincs rögzített munkalap.
+                    </td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model)
+                {
+                    var statusBadge = item.Statusz switch
+                    {
+                        MunkalapStatusz.Bejegyezve => "bg-warning text-dark",
+                        MunkalapStatusz.Folyamatban => "bg-info text-dark",
+                        MunkalapStatusz.Befejezve => "bg-success",
+                        MunkalapStatusz.Torolve => "bg-secondary",
+                        _ => "bg-light text-dark"
+                    };
+
+                    <tr>
+                        <td>#@item.Id</td>
+                        <td>
+                            <strong>@item.Rendszam</strong><br />
+                            <small class="text-muted">
+                                @(item.Ugyfel?.Nev ?? "Ismeretlen ügyfél")
+                            </small><br />
+                            <small class="text-muted">
+                                @item.JarmuTipus?.Marka @item.JarmuTipus?.Modell
+                            </small>
+                        </td>
+                        <td>@item.Leiras</td>
+                        <td>@item.Letrehozva.ToString("yyyy.MM.dd. HH:mm")</td>
+                        <td>
+                            <span class="badge @statusBadge">
+                                @Html.DisplayFor(_ => item.Statusz)
+                            </span>
+                        </td>
+                        <td>
+                            <a asp-controller="Munkalapok"
+                               asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-outline-info">
+                                Részletek
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
 </div>
