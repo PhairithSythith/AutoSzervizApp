@@ -12,7 +12,38 @@
         <a asp-action="Create" class="btn btn-primary">Új munkalap</a>
     </p>
 }
+<form asp-action="Index" method="get" class="row g-2 mb-4">
+    <div class="col-md-5">
+        <input type="text"
+               name="keresesiSzoveg"
+               value="@ViewBag.AktualisKereses"
+               class="form-control"
+               placeholder="Keresés rendszám, ügyfél, járműtípus vagy leírás alapján..." />
+    </div>
 
+    <div class="col-md-3">
+        <select name="statuszSzuro" class="form-select">
+            <option value="">-- Minden státusz --</option>
+            @foreach (var statusz in Html.GetEnumSelectList<AutoSzervizApp.Models.MunkalapStatusz>())
+            {
+                if (ViewBag.AktualisStatusz != null &&
+                    (int)ViewBag.AktualisStatusz == int.Parse(statusz.Value))
+                {
+                    <option value="@statusz.Value" selected>@statusz.Text</option>
+                }
+                else
+                {
+                    <option value="@statusz.Value">@statusz.Text</option>
+                }
+            }
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-outline-primary">Keresés / szűrés</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Szűrők törlése</a>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -30,7 +61,9 @@
         @if (!Model.Any())
         {
             <tr>
-                <td colspan="8">Még nincs rögzített munkalap.</td>
+               <td colspan="8">
+                    Még nincs rögzített munkalap, vagy nincs a keresésnek megfelelő találat.
+                </td>
             </tr>
         }
         else

@@ -17,11 +17,39 @@ public class MunkalapokController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(
+    MunkalapStatusz? statuszSzuro,
+    string? keresesiSzoveg)
     {
-        var munkalapok = await _context.Munkalapok
-            .Include(m => m.Ugyfel)
+        var query = _context.Munkalapok
             .Include(m => m.JarmuTipus)
+            .Include(m => m.Ugyfel)
+            .AsQueryable();
+
+        if (statuszSzuro.HasValue)
+        {
+            query = query.Where(m => m.Statusz == statuszSzuro.Value);
+        }
+
+        if (!string.IsNullOrWhiteSpace(keresesiSzoveg))
+        {
+            keresesiSzoveg = keresesiSzoveg.Trim().ToLower();
+
+            query = query.Where(m =>
+                m.Rendszam.ToLower().Contains(keresesiSzoveg) ||
+                (m.Ugyfel != null &&
+                m.Ugyfel.Nev.ToLower().Contains(keresesiSzoveg)) ||
+                (m.JarmuTipus != null &&
+                (m.JarmuTipus.Marka + " " + m.JarmuTipus.Modell)
+                    .ToLower()
+                    .Contains(keresesiSzoveg)) ||
+                m.Leiras.ToLower().Contains(keresesiSzoveg));
+        }
+
+        ViewBag.AktualisStatusz = statuszSzuro;
+        ViewBag.AktualisKereses = keresesiSzoveg;
+
+        var munkalapok = await query
             .AsNoTracking()
             .OrderByDescending(m => m.Letrehozva)
             .ToListAsync();

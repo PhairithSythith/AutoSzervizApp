@@ -35,6 +35,15 @@
         <span asp-validation-for="UgyfelId" class="text-danger"></span>
     </div>
 
+    <div class="mt-2 mb-3">
+        <a asp-controller="Ugyfelek"
+        asp-action="Create"
+        asp-route-vissza="Munkalap"
+        class="btn btn-outline-success">
+            + Új ügyfél rögzítése
+        </a>
+    </div>
+
     <div class="mb-3">
         <label asp-for="Leiras" class="form-label"></label>
         <textarea asp-for="Leiras" class="form-control"></textarea>

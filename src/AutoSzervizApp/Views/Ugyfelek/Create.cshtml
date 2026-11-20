@@ -7,6 +7,7 @@
 <h1>Új ügyfél</h1>
 
 <form asp-action="Create" method="post">
+    <input type="hidden" name="vissza" value="@ViewBag.Vissza" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="mb-3">
@@ -28,7 +29,18 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Mentés</button>
-    <a asp-action="Index" class="btn btn-secondary">Vissza</a>
+    @if (ViewBag.Vissza?.ToString() == "Munkalap")
+    {
+        <a asp-controller="Munkalapok"
+        asp-action="Create"
+        class="btn btn-secondary">
+            Vissza a munkalap rögzítéséhez
+        </a>
+    }
+    else
+    {
+        <a asp-action="Index" class="btn btn-secondary">Vissza</a>
+    }
 </form>
 
 @section Scripts {

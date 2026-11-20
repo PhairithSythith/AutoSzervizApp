@@ -25,22 +25,29 @@ public class UgyfelekController : Controller
         return View(ugyfelek);
     }
     [HttpGet]
-    public IActionResult Create()
+    public IActionResult Create(string? vissza)
     {
+        ViewBag.Vissza = vissza;
         return View();
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Ugyfel ugyfel)
+    public async Task<IActionResult> Create(Ugyfel ugyfel, string? vissza)
     {
         if (!ModelState.IsValid)
         {
+            ViewBag.Vissza = vissza;
             return View(ugyfel);
         }
 
         _context.Ugyfelek.Add(ugyfel);
         await _context.SaveChangesAsync();
+
+        if (vissza == "Munkalap")
+        {
+            return RedirectToAction("Create", "Munkalapok");
+        }
 
         return RedirectToAction(nameof(Index));
     }

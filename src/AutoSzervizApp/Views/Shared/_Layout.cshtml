@@ -21,13 +21,32 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark"
+                            asp-controller="Home"
+                            asp-action="Index">Főoldal</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
+                                asp-controller="Munkalapok"
+                                asp-action="Index">Munkalapok</a>
+                            </li>
+                        }
+
                         @if (User.Identity?.IsAuthenticated == true)
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
+                                asp-controller="Ugyfelek"
+                                asp-action="Index">Ügyfelek</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
+                                asp-controller="Jarmuvek"
+                                asp-action="Index">Járművek</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark"
                                 asp-controller="SzervizTipusJavaslatok"
@@ -39,10 +58,31 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark"
+                                asp-controller="JarmuTipusok"
+                                asp-action="Index">Járműtípusok</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
+                                asp-controller="SzervizTipusok"
+                                asp-action="Index">Szerviztípusok</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
                                 asp-controller="SzervizTipusJavaslatok"
                                 asp-action="AdminIndex">Javaslatok elbírálása</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
+                                asp-controller="Admin"
+                                asp-action="Index">Adminisztráció</a>
+                            </li>
                         }
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                            asp-controller="Home"
+                            asp-action="Privacy">Adatvédelem</a>
+                        </li>
                     </ul>
                 </div>
                 <partial name="_LoginPartial" />
