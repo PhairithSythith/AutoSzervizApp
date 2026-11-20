@@ -41,6 +41,26 @@ public class JarmuTipusokController : Controller
             return View(jarmuTipus);
         }
 
+        var marka = jarmuTipus.Marka.Trim();
+        var modell = jarmuTipus.Modell.Trim();
+
+        var letezikMar = await _context.JarmuTipusok.AnyAsync(t =>
+            t.Marka.ToLower() == marka.ToLower() &&
+            t.Modell.ToLower() == modell.ToLower() &&
+            t.GyartasiEv == jarmuTipus.GyartasiEv);
+
+        if (letezikMar)
+        {
+            ModelState.AddModelError(
+                string.Empty,
+                "Ez a járműtípus már szerepel a listában.");
+
+            return View(jarmuTipus);
+        }
+
+        jarmuTipus.Marka = marka;
+        jarmuTipus.Modell = modell;
+
         _context.JarmuTipusok.Add(jarmuTipus);
         await _context.SaveChangesAsync();
 

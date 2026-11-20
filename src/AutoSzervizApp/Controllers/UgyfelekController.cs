@@ -112,11 +112,29 @@ public class UgyfelekController : Controller
     {
         var ugyfel = await _context.Ugyfelek.FindAsync(id);
 
-        if (ugyfel != null)
+        if (ugyfel == null)
         {
-            _context.Ugyfelek.Remove(ugyfel);
-            await _context.SaveChangesAsync();
+            return NotFound();
         }
+
+        var vanMunkalapja = await _context.Munkalapok
+            .AnyAsync(m => m.UgyfelId == id);
+
+        var vanJarmuve = await _context.Jarmuvek
+            .AnyAsync(j => j.UgyfelId == id);
+
+        if (vanMunkalapja || vanJarmuve)
+        {
+            TempData["Hiba"] =
+                "Az ügyfél nem törölhető, mert munkalap vagy jármű tartozik hozzá.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        _context.Ugyfelek.Remove(ugyfel);
+        await _context.SaveChangesAsync();
+
+        TempData["SikerUzenet"] = "Az ügyfél sikeresen törölve.";
 
         return RedirectToAction(nameof(Index));
     }

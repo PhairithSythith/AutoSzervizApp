@@ -5,7 +5,15 @@
 }
 
 <h1>Ügyfelek</h1>
+@if (TempData["SikerUzenet"] is string siker)
+{
+    <div class="alert alert-success">@siker</div>
+}
 
+@if (TempData["Hiba"] is string hiba)
+{
+    <div class="alert alert-danger">@hiba</div>
+}
 <p>
     <a asp-action="Create" class="btn btn-primary">Új ügyfél felvétele</a>
 </p>
