@@ -67,7 +67,9 @@ public class MunkalapokController : Controller
     [Authorize(Roles = "Admin,Employee")]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Munkalap munkalap)
+    public async Task<IActionResult> Create(
+    [Bind("Rendszam,JarmuTipusId,UgyfelId,Leiras,Koltseg,BefejezveDatuma,Statusz")]
+    Munkalap munkalap)
     {
         if (!ModelState.IsValid)
         {
