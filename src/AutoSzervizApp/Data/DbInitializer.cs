@@ -23,15 +23,20 @@ public static class DbInitializer
 
         var admin = await felhasznaloKezelo.FindByEmailAsync("admin@gmail.com");
 
-        if (admin != null &&
-            !await felhasznaloKezelo.IsInRoleAsync(admin, "Admin"))
+        if (admin != null)
         {
-            await felhasznaloKezelo.AddToRoleAsync(admin, "Admin");
-        }
+            var token = await felhasznaloKezelo.GeneratePasswordResetTokenAsync(admin);
+            var resetEredmeny = await felhasznaloKezelo.ResetPasswordAsync(admin, token, "AdminJelszo123!");
 
-        if (context.SzervizTipusok.Any())
-        {
-            return;
+            if (!resetEredmeny.Succeeded)
+            {
+                throw new Exception(string.Join("; ", resetEredmeny.Errors.Select(e => e.Description)));
+            }
+
+            if (!await felhasznaloKezelo.IsInRoleAsync(admin, "Admin"))
+            {
+                await felhasznaloKezelo.AddToRoleAsync(admin, "Admin");
+            }
         }
 
         var szervizTipusok = new[]
