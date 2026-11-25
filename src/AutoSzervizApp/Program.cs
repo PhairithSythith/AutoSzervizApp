@@ -44,6 +44,28 @@ using (var scope = app.Services.CreateScope())
     var context =
         services.GetRequiredService<ApplicationDbContext>();
 
+    await context.Database.OpenConnectionAsync();
+
+    var kapcsolat = context.Database.GetDbConnection();
+
+    await using var parancs = kapcsolat.CreateCommand();
+
+    // SQLite verzió
+    parancs.CommandText = "SELECT sqlite_version();";
+    Console.WriteLine($"SQLite verzió: {await parancs.ExecuteScalarAsync()}");
+
+    // Integritásellenőrzés
+    parancs.CommandText = "PRAGMA integrity_check;";
+    Console.WriteLine($"Integritás: {await parancs.ExecuteScalarAsync()}");
+
+    // Szerepkörök lekérdezése
+    parancs.CommandText = "SELECT COUNT(*) FROM AspNetRoles;";
+    Console.WriteLine($"Szerepkörök száma: {await parancs.ExecuteScalarAsync()}");
+
+    Console.WriteLine(
+    $"Adatbázis elérési útja: {context.Database.GetDbConnection().DataSource}"
+    );    
+
     context.Database.Migrate();
 
     var szerepkorKezelo =

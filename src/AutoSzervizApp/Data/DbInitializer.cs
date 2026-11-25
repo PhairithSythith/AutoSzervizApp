@@ -21,22 +21,47 @@ public static class DbInitializer
             }
         }
 
-        var admin = await felhasznaloKezelo.FindByEmailAsync("admin@gmail.com");
+        var ujAdmin = await felhasznaloKezelo.FindByEmailAsync("admin2@gmail.com");
 
-        if (admin != null)
+        if (ujAdmin == null)
         {
-            var token = await felhasznaloKezelo.GeneratePasswordResetTokenAsync(admin);
-            var resetEredmeny = await felhasznaloKezelo.ResetPasswordAsync(admin, token, "AdminJelszo123!");
-
-            if (!resetEredmeny.Succeeded)
+            ujAdmin = new IdentityUser
             {
-                throw new Exception(string.Join("; ", resetEredmeny.Errors.Select(e => e.Description)));
-            }
+                UserName = "admin2@gmail.com",
+                Email = "admin2@gmail.com",
+                EmailConfirmed = true
+            };
 
-            if (!await felhasznaloKezelo.IsInRoleAsync(admin, "Admin"))
+            var eredmeny = await felhasznaloKezelo.CreateAsync(
+                ujAdmin,
+                "AdminUj123!"
+            );
+
+            if (!eredmeny.Succeeded)
             {
-                await felhasznaloKezelo.AddToRoleAsync(admin, "Admin");
+                throw new Exception(
+                    string.Join("; ", eredmeny.Errors.Select(e => e.Description))
+                );
             }
+        }
+
+        if (!await felhasznaloKezelo.IsInRoleAsync(ujAdmin, "Admin"))
+        {
+            var szerepkorEredmeny =
+                await felhasznaloKezelo.AddToRoleAsync(ujAdmin, "Admin");
+
+            if (!szerepkorEredmeny.Succeeded)
+            {
+                throw new Exception(
+                    string.Join("; ", szerepkorEredmeny.Errors.Select(e => e.Description))
+                );
+            }
+        }
+
+        Console.WriteLine("Új adminfiók ellenőrizve!");
+        if (!await felhasznaloKezelo.IsInRoleAsync(ujAdmin, "Admin"))
+        {
+            await felhasznaloKezelo.AddToRoleAsync(ujAdmin, "Admin");
         }
 
         var szervizTipusok = new[]

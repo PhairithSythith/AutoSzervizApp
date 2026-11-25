@@ -1,2 +1,7 @@
-email: admin@gmail.com
-jelszo: AdminJelszo123!
+Admin:
+    email: admin2@gmail.com
+    jelszo: AdminUj123!
+
+Dolgozó:
+    email: dolgozo_2@gmai.com
+    jelszo: Dolgozo123!

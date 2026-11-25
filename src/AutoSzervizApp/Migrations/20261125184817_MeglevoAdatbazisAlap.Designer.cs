@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoSzervizApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261120153912_SzervizTipusJavaslatok")]
-    partial class SzervizTipusJavaslatok
+    [Migration("20261125184817_MeglevoAdatbazisAlap")]
+    partial class MeglevoAdatbazisAlap
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
